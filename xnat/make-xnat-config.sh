@@ -39,6 +39,24 @@ smtpAuth=$XNAT_SMTP_AUTH
 EOF
 fi
 
+if [ "$XNAT_LDAP_AMC_ENABLED" = true ]; then
+  # add ldap config AMC
+  mkdir -p $XNAT_HOME/config/auth
+  cat >> $XNAT_HOME/config/auth/${XNAT_LDAP_AMC_PROVIDER_ID}-provider.properties << EOF
+name=$XNAT_LDAP_AMC_HOSTNAME
+provider.id=$XNAT_LDAP_AMC_PROVIDER_ID
+auth.method=ldap
+visible=$XNAT_LDAP_AMC_VISIBLE
+auto.enabled=$XNAT_LDAP_AMC_AUTO_ENABLED
+auto.verified=$XNAT_LDAP_AMC_AUTO_VERIFIED
+address=$XNAT_LDAP_AMC_ADDRESS
+userdn=$XNAT_LDAP_AMC_USERDN
+password=$XNAT_LDAP_AMC_PASSWORD
+search.base=$XNAT_LDAP_AMC_SEARCH_BASE
+search.filter=$XNAT_LDAP_AMC_SEARCH_FILTER
+EOF
+fi
+
 mkdir -p /usr/local/share/xnat
 find $XNAT_HOME/config -mindepth 1 -maxdepth 1 -type f -exec cp {} /usr/local/share/xnat \;
 
