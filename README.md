@@ -21,7 +21,8 @@ This repository contains files to bootstrap XNAT deployment. The build creates t
 
 - **[Tomcat](http://tomcat.apache.org/) + XNAT**: The XNAT web application
 - [**Postgres**](https://www.postgresql.org/): The XNAT database
-- [**nginx**](https://www.nginx.com/): Web proxy sitting in front of XNAT
+
+The original implementation also contained an [**nginx**](https://www.nginx.com/) SSL/TLS proxy. However, on the Luna cluster we replaced this with an independend HA proxy container.
 
 ## Prerequisites
 
@@ -32,10 +33,10 @@ This repository contains files to bootstrap XNAT deployment. The build creates t
 
 > Note that the name of the environment variable for the XNAT version has changed from `XNAT_VER` to `XNAT_VERSION`. Please update any `env` files you've created previously.
 
-1. Clone the [xnat-docker-compose](https://github.com/NrgXnat/xnat-docker-compose) repository.)
+1. Clone the [xnat-docker-compose](https://github.com/pfcgroot/xnat-docker-compose) repository.)
 
 ```
-$ git clone https://github.com/NrgXnat/xnat-docker-compose
+$ git clone https://github.com/pfcgroot/xnat-docker-compose.git
 $ cd xnat-docker-compose
 ```
 
@@ -139,7 +140,6 @@ XNAT_ACTIVEMQ_URL | Indicates the URL for an external ActiveMQ service to use fo
 XNAT_ACTIVEMQ_USERNAME | Indicates the username to use to authenticate with the configured ActiveMQ server. Has no effect if **XNAT_ACTIVEMQ_URL** isn't specified. |
 XNAT_ACTIVEMQ_PASSWORD | Indicates the password to use to authenticate with the configured ActiveMQ server. Has no effect if **XNAT_ACTIVEMQ_URL** isn't specified. |
 PG_VERSION | Specifies the [version tag](https://hub.docker.com/_/postgres?tab=tags) of the PostgreSQL docker container used in `docker-compose.yml`. | 12.2-alpine
-NGINX_VERSION | Specifies the [version tag](https://hub.docker.com/_/nginx?tab=tags) of the Nginx docker container used in `docker-compose.yml`. | 1.19-alpine-perl
 
 
 ## Troubleshooting

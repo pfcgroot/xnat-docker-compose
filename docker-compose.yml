@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.8'
 services:
   xnat-web:
     build:
@@ -21,9 +21,9 @@ services:
         XNAT_EMAIL: ${XNAT_EMAIL}
     ports:
       - 8104:8104
+      - 8080:8080
     volumes:
       - ${XNAT_HOME_AT_HOST}/plugins:/data/xnat/home/plugins
-#     - ${XNAT_HOME_AT_HOST}/config:${XNAT_HOME}/config    # need to add ldap to xnat/make-xnat-config.sh
       - ${XNAT_HOME_AT_HOST}/logs:/data/xnat/home/logs
       - ${XNAT_DATA_AT_HOST}/archive:${XNAT_ROOT}/archive
       - ${XNAT_HOME_AT_HOST}/build:${XNAT_ROOT}/build
@@ -34,6 +34,12 @@ services:
     environment:
       - CATALINA_OPTS=-Xms${XNAT_MIN_HEAP} -Xmx${XNAT_MAX_HEAP} -Dxnat.home=${XNAT_HOME}
       - XNAT_HOME_AT_HOST=${XNAT_HOME}
+#    healthcheck:
+#      test: ["CMD", "curl", "-f", "http://localhost"]
+#      interval: 1m
+#      timeout: 10s
+#      retries: 3
+#      start_period: 40s
 
   xnat-db:
     image: postgres:${PG_VERSION}
@@ -49,17 +55,4 @@ services:
       # variables for the sql script
       - XNAT_DATASOURCE_USERNAME=${XNAT_DATASOURCE_USERNAME}
       - XNAT_DATASOURCE_PASSWORD=${XNAT_DATASOURCE_PASSWORD}
-
-  xnat-nginx:
-    image: nginx:${NGINX_VERSION}
-    volumes:
-      - ${XNAT_HOME_AT_HOST}/nginx/nginx.conf:/etc/nginx/nginx.conf
-    ports:
-      - "80:80"
-    expose:
-      - "80"
-    depends_on:
-      - xnat-web
-    links:
-      - xnat-web
 
