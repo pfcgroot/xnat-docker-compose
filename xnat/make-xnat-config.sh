@@ -2,6 +2,7 @@
 
 # generate xnat config
 if [ ! -f $XNAT_HOME/config/xnat-conf.properties ]; then
+  echo "  Generating $XNAT_HOME/config/xnat-conf.properties"
   cat > $XNAT_HOME/config/xnat-conf.properties << EOF
 datasource.driver=$XNAT_DATASOURCE_DRIVER
 datasource.url=$XNAT_DATASOURCE_URL
@@ -21,6 +22,7 @@ fi
 
 
 if [ ! -z "$XNAT_EMAIL" ]; then
+  echo "  Generating $XNAT_HOME/config/prefs-init.ini"
   cat > $XNAT_HOME/config/prefs-init.ini << EOF
 [siteConfig]
 adminEmail=$XNAT_EMAIL
@@ -28,6 +30,7 @@ EOF
 fi
 
 if [ "$XNAT_SMTP_ENABLED" = true ]; then
+  echo "  Generating $XNAT_HOME/config/prefs-init.ini"
   cat >> $XNAT_HOME/config/prefs-init.ini << EOF
 [notifications]
 smtpEnabled=true
@@ -41,6 +44,7 @@ fi
 
 if [ "$XNAT_LDAP_AMC_ENABLED" = true ]; then
   # add ldap config AMC
+  echo "  Generating $XNAT_HOME/config/auth/${XNAT_LDAP_AMC_PROVIDER_ID}-provider.properties"
   mkdir -p $XNAT_HOME/config/auth
   cat >> $XNAT_HOME/config/auth/${XNAT_LDAP_AMC_PROVIDER_ID}-provider.properties << EOF
 name=$XNAT_LDAP_AMC_HOSTNAME
